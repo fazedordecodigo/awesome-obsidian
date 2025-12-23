@@ -1,8 +1,9 @@
-import { getObsidianPlugins } from '@/lib/obsidian-api';
-import { PluginList } from '@/components/PluginList';
+import { getObsidianPlugins, getObsidianThemes } from '@/lib/obsidian-api';
+import { HomeTabs } from '@/components/HomeTabs';
 import { Boxes } from 'lucide-react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
+import { Suspense } from 'react';
 
 export default async function Home({
   params
@@ -16,8 +17,11 @@ export default async function Home({
 
   const t = await getTranslations('HomePage');
 
-  // 1. Busca todos os plugins da API do Obsidian (Executado no Build para SSG)
-  const allPlugins = await getObsidianPlugins();
+  // 1. Busca todos os plugins e temas da API do Obsidian (Executado no Build para SSG)
+  const [allPlugins, allThemes] = await Promise.all([
+    getObsidianPlugins(),
+    getObsidianThemes(),
+  ]);
 
   return (
     <main className="min-h-screen">
@@ -49,8 +53,9 @@ export default async function Home({
 
       {/* Conteúdo Principal */}
       <div className="container mx-auto px-4 pb-24">
-        {/* Componente Client-Side que lida com Busca, Filtro e Paginação */}
-        <PluginList allPlugins={allPlugins} />
+        <Suspense fallback={<div className="py-20 text-center">Loading...</div>}>
+          <HomeTabs allPlugins={allPlugins} allThemes={allThemes} />
+        </Suspense>
       </div>
 
       {/* Footer Premium */}

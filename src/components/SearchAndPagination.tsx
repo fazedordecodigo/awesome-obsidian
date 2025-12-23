@@ -6,11 +6,17 @@ import { useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { useTranslations } from 'next-intl';
 
-export function SearchAndPagination({ totalPages }: { totalPages: number }) {
+export function SearchAndPagination({
+  totalPages,
+  translationNamespace = 'PluginList'
+}: {
+  totalPages: number;
+  translationNamespace?: 'PluginList' | 'ThemeList';
+}) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const t = useTranslations('PluginList');
+  const t = useTranslations(translationNamespace);
 
   const currentPage = Number(searchParams.get('page')) || 1;
   const currentSort = searchParams.get('sort') || 'newest';
@@ -73,8 +79,12 @@ export function SearchAndPagination({ totalPages }: { totalPages: number }) {
             onChange={(e) => handleSort(e.target.value)}
           >
             <option value="newest">{t('sort.newest')}</option>
-            <option value="downloads">{t('sort.downloads')}</option>
-            <option value="stars">{t('sort.stars')}</option>
+            {translationNamespace === 'PluginList' && (
+              <>
+                <option value="downloads">{t('sort.downloads')}</option>
+                <option value="stars">{t('sort.stars')}</option>
+              </>
+            )}
             <option value="name_asc">{t('sort.name_asc')}</option>
             <option value="name_desc">{t('sort.name_desc')}</option>
           </select>
