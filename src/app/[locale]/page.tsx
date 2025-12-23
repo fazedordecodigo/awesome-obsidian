@@ -1,4 +1,5 @@
 import { getObsidianPlugins, getObsidianThemes } from '@/lib/obsidian-api';
+import { getItemRatings } from '@/lib/db-queries';
 import { HomeTabs } from '@/components/HomeTabs';
 import { Boxes } from 'lucide-react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -17,10 +18,11 @@ export default async function Home({
 
   const t = await getTranslations('HomePage');
 
-  // 1. Busca todos os plugins e temas da API do Obsidian (Executado no Build para SSG)
-  const [allPlugins, allThemes] = await Promise.all([
+  // 1. Busca todos os plugins, temas e avaliações (Executado no Build para SSG)
+  const [allPlugins, allThemes, ratings] = await Promise.all([
     getObsidianPlugins(),
     getObsidianThemes(),
+    getItemRatings(),
   ]);
 
   return (
@@ -54,7 +56,7 @@ export default async function Home({
       {/* Conteúdo Principal */}
       <div className="container mx-auto px-4 pb-24">
         <Suspense fallback={<div className="py-20 text-center">Loading...</div>}>
-          <HomeTabs allPlugins={allPlugins} allThemes={allThemes} />
+          <HomeTabs allPlugins={allPlugins} allThemes={allThemes} ratings={ratings} />
         </Suspense>
       </div>
 

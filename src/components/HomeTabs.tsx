@@ -12,9 +12,10 @@ import { useTranslations } from 'next-intl';
 interface HomeTabsProps {
   allPlugins: ObsidianPlugin[];
   allThemes: ObsidianTheme[];
+  ratings: Record<string, Record<string, { averageRating: number; totalRatings: number }>>;
 }
 
-export function HomeTabs({ allPlugins, allThemes }: HomeTabsProps) {
+export function HomeTabs({ allPlugins, allThemes, ratings }: HomeTabsProps) {
   const t = useTranslations('HomePage');
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -37,8 +38,8 @@ export function HomeTabs({ allPlugins, allThemes }: HomeTabsProps) {
           <button
             onClick={() => handleTabChange('plugins')}
             className={`flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all ${activeTab === 'plugins'
-                ? 'bg-accent text-white shadow-lg shadow-accent/20'
-                : 'text-muted hover:bg-accent/10 hover:text-accent'
+              ? 'bg-accent text-white shadow-lg shadow-accent/20'
+              : 'text-muted hover:bg-accent/10 hover:text-accent'
               }`}
           >
             <Boxes size={18} />
@@ -47,8 +48,8 @@ export function HomeTabs({ allPlugins, allThemes }: HomeTabsProps) {
           <button
             onClick={() => handleTabChange('themes')}
             className={`flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all ${activeTab === 'themes'
-                ? 'bg-accent text-white shadow-lg shadow-accent/20'
-                : 'text-muted hover:bg-accent/10 hover:text-accent'
+              ? 'bg-accent text-white shadow-lg shadow-accent/20'
+              : 'text-muted hover:bg-accent/10 hover:text-accent'
               }`}
           >
             <Palette size={18} />
@@ -60,9 +61,9 @@ export function HomeTabs({ allPlugins, allThemes }: HomeTabsProps) {
       {/* Tab Content */}
       <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
         {activeTab === 'plugins' ? (
-          <PluginList allPlugins={allPlugins} />
+          <PluginList allPlugins={allPlugins} ratings={ratings.plugin} />
         ) : (
-          <ThemeList allThemes={allThemes} />
+          <ThemeList allThemes={allThemes} ratings={ratings.theme} />
         )}
       </div>
     </div>

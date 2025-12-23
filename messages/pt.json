@@ -60,5 +60,10 @@
     "label": "Idioma",
     "en": "Inglês",
     "pt": "Português"
+  },
+  "Rating": {
+    "noRating": "Sem avaliação",
+    "vote": "voto",
+    "votes": "votos"
   }
 }

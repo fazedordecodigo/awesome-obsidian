@@ -3,12 +3,17 @@ import { User, ExternalLink, Palette } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { ObsidianTheme } from '@/lib/obsidian-api';
+import { Rating } from './Rating';
 
 interface ThemeCardProps {
   theme: ObsidianTheme;
+  rating?: {
+    averageRating: number;
+    totalRatings: number;
+  };
 }
 
-export function ThemeCard({ theme }: ThemeCardProps) {
+export function ThemeCard({ theme, rating }: ThemeCardProps) {
   const t = useTranslations('ThemeCard');
 
   return (
@@ -20,9 +25,17 @@ export function ThemeCard({ theme }: ThemeCardProps) {
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent ring-1 ring-accent/20 transition-colors group-hover:bg-accent/20 group-hover:text-accent">
             <Palette size={22} />
           </div>
-          <span className="rounded-full border border-border bg-background px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted">
-            Theme
-          </span>
+          <div className="flex flex-col items-end gap-2">
+            <span className="rounded-full border border-border bg-background px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted">
+              Theme
+            </span>
+            <Rating
+              itemId={theme.repo}
+              itemType="theme"
+              initialAverage={rating?.averageRating || 0}
+              initialTotal={rating?.totalRatings || 0}
+            />
+          </div>
         </div>
 
         <div className="relative mb-6 aspect-video overflow-hidden rounded-xl border border-border bg-muted">

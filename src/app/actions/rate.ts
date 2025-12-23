@@ -2,15 +2,18 @@
 
 import { db } from "@/db";
 import { ratings } from "@/db/schema";
-import { eq } from "drizzle-orm";
-import { revalidateTag } from "next/cache";
+import { and, eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
-export async function ratePlugin(pluginId: string, newRating: number) {
+export async function rateItem(itemId: string, itemType: 'plugin' | 'theme', newRating: number) {
   if (newRating < 1 || newRating > 5) return { error: "Invalid rating" };
 
   try {
     const existing = await db.query.ratings.findFirst({
-      where: eq(ratings.pluginId, pluginId),
+      where: and(
+        eq(ratings.itemId, itemId),
+        eq(ratings.itemType, itemType)
+      ),
     });
 
     if (existing) {
@@ -24,21 +27,21 @@ export async function ratePlugin(pluginId: string, newRating: number) {
           totalRatings: newTotal,
           updatedAt: new Date(),
         })
-        .where(eq(ratings.pluginId, pluginId));
+        .where(eq(ratings.id, existing.id));
     } else {
       await db.insert(ratings).values({
-        pluginId,
+        itemId,
+        itemType,
         averageRating: newRating,
         totalRatings: 1,
         updatedAt: new Date(),
       });
     }
 
-    // @ts-expect-error - revalidateTag in Next.js 15/16 might have different signature in some environments
-    revalidateTag("ratings");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
-    console.error("Error rating plugin:", error);
+    console.error("Error rating item:", error);
     return { error: "Failed to save rating" };
   }
 }

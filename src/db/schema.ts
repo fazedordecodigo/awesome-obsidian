@@ -13,7 +13,8 @@ export const plugins = sqliteTable("plugins", {
 
 export const ratings = sqliteTable("ratings", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  pluginId: text("plugin_id").notNull().unique(),
+  itemId: text("item_id").notNull(),
+  itemType: text("item_type").notNull().default('plugin'), // 'plugin' ou 'theme'
   averageRating: real("average_rating").notNull().default(0),
   totalRatings: integer("total_ratings").notNull().default(0),
   updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().default(new Date()),

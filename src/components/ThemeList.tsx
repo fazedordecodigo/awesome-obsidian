@@ -9,7 +9,13 @@ import { useTranslations } from 'next-intl';
 
 const ITEMS_PER_PAGE = 9;
 
-function ThemeListContent({ allThemes }: { allThemes: ObsidianTheme[] }) {
+function ThemeListContent({
+  allThemes,
+  ratings
+}: {
+  allThemes: ObsidianTheme[];
+  ratings: Record<string, { averageRating: number; totalRatings: number }>;
+}) {
   const searchParams = useSearchParams();
   const t = useTranslations('ThemeList');
 
@@ -51,7 +57,11 @@ function ThemeListContent({ allThemes }: { allThemes: ObsidianTheme[] }) {
       {data.length > 0 ? (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {data.map((theme) => (
-            <ThemeCard key={theme.name} theme={theme} />
+            <ThemeCard
+              key={theme.name}
+              theme={theme}
+              rating={ratings[theme.repo]}
+            />
           ))}
         </div>
       ) : (
@@ -69,11 +79,17 @@ function ThemeListContent({ allThemes }: { allThemes: ObsidianTheme[] }) {
   );
 }
 
-export function ThemeList({ allThemes }: { allThemes: ObsidianTheme[] }) {
+export function ThemeList({
+  allThemes,
+  ratings
+}: {
+  allThemes: ObsidianTheme[];
+  ratings: Record<string, { averageRating: number; totalRatings: number }>;
+}) {
   const t = useTranslations('ThemeList');
   return (
     <Suspense fallback={<div className="py-20 text-center">{t('loading')}</div>}>
-      <ThemeListContent allThemes={allThemes} />
+      <ThemeListContent allThemes={allThemes} ratings={ratings} />
     </Suspense>
   );
 }

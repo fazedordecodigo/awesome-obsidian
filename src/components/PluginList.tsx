@@ -9,7 +9,13 @@ import { useTranslations } from 'next-intl';
 
 const ITEMS_PER_PAGE = 9;
 
-function PluginListContent({ allPlugins }: { allPlugins: ObsidianPlugin[] }) {
+function PluginListContent({
+  allPlugins,
+  ratings
+}: {
+  allPlugins: ObsidianPlugin[];
+  ratings: Record<string, { averageRating: number; totalRatings: number }>;
+}) {
   const searchParams = useSearchParams();
   const t = useTranslations('PluginList');
 
@@ -50,7 +56,11 @@ function PluginListContent({ allPlugins }: { allPlugins: ObsidianPlugin[] }) {
       {data.length > 0 ? (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {data.map((plugin) => (
-            <PluginCard key={plugin.id} plugin={plugin} />
+            <PluginCard
+              key={plugin.id}
+              plugin={plugin}
+              rating={ratings[plugin.id]}
+            />
           ))}
         </div>
       ) : (
@@ -68,11 +78,17 @@ function PluginListContent({ allPlugins }: { allPlugins: ObsidianPlugin[] }) {
   );
 }
 
-export function PluginList({ allPlugins }: { allPlugins: ObsidianPlugin[] }) {
+export function PluginList({
+  allPlugins,
+  ratings
+}: {
+  allPlugins: ObsidianPlugin[];
+  ratings: Record<string, { averageRating: number; totalRatings: number }>;
+}) {
   const t = useTranslations('PluginList');
   return (
     <Suspense fallback={<div className="py-20 text-center">{t('loading')}</div>}>
-      <PluginListContent allPlugins={allPlugins} />
+      <PluginListContent allPlugins={allPlugins} ratings={ratings} />
     </Suspense>
   );
 }

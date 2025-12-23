@@ -1,9 +1,11 @@
 import React from 'react';
 import { Star, Download, User, ExternalLink } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { Rating } from './Rating';
 
 interface PluginCardProps {
   plugin: {
+    id: string;
     name: string;
     description: string;
     author: string;
@@ -11,9 +13,13 @@ interface PluginCardProps {
     stars?: number;
     downloads?: number;
   };
+  rating?: {
+    averageRating: number;
+    totalRatings: number;
+  };
 }
 
-export function PluginCard({ plugin }: PluginCardProps) {
+export function PluginCard({ plugin, rating }: PluginCardProps) {
   const t = useTranslations('PluginCard');
   return (
     <div className="group relative flex flex-col justify-between rounded-2xl border border-border bg-card/50 p-6 transition-all duration-300 hover:border-accent/30 hover:bg-card hover:shadow-[0_0_40px_-15px_rgba(124,58,237,0.1)] dark:bg-white/[0.02] dark:hover:bg-white/[0.04]">
@@ -24,9 +30,17 @@ export function PluginCard({ plugin }: PluginCardProps) {
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent ring-1 ring-accent/20 transition-colors group-hover:bg-accent/20 group-hover:text-accent">
             <ExternalLink size={22} />
           </div>
-          <span className="rounded-full border border-border bg-background px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted">
-            Plugin
-          </span>
+          <div className="flex flex-col items-end gap-2">
+            <span className="rounded-full border border-border bg-background px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted">
+              Plugin
+            </span>
+            <Rating
+              itemId={plugin.id}
+              itemType="plugin"
+              initialAverage={rating?.averageRating || 0}
+              initialTotal={rating?.totalRatings || 0}
+            />
+          </div>
         </div>
 
         <h3 className="mb-3 text-xl font-semibold tracking-tight text-foreground transition-colors group-hover:text-accent">
