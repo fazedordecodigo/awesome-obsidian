@@ -57,49 +57,57 @@ export default async function Home(props: PageProps) {
   const data = sortedPlugins.slice(offset, offset + ITEMS_PER_PAGE);
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-200">
+    <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-slate-800 bg-slate-900 py-20">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+      <section className="relative overflow-hidden py-24 md:py-32">
         <div className="container relative mx-auto px-4 text-center">
-          <div className="mb-6 flex justify-center">
-            <div className="rounded-full bg-purple-500/10 p-3 ring-1 ring-purple-500/50">
-              <Boxes className="h-10 w-10 text-purple-400" />
+          <div className="mb-8 flex justify-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-300 backdrop-blur-xl">
+              <Boxes className="h-4 w-4" />
+              <span>Curadoria de Plugins Obsidian</span>
             </div>
           </div>
-          <h1 className="mb-4 bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent md:text-6xl">
+          <h1 className="mb-6 bg-gradient-to-b from-white to-slate-500 bg-clip-text text-6xl font-bold tracking-tight text-transparent md:text-8xl">
             Awesome Obsidian
           </h1>
-          <p className="mx-auto max-w-2xl text-lg text-slate-400">
-            Uma coleção curada dos melhores plugins, temas e recursos para o seu segundo cérebro.
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-slate-400 md:text-xl">
+            Eleve seu segundo cérebro com as melhores ferramentas. Uma coleção selecionada para potencializar seu fluxo de trabalho no Obsidian.
           </p>
         </div>
       </section>
 
       {/* Conteúdo Principal */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 pb-24">
         {/* Componente Client-Side de Busca e Controles */}
         <SearchAndPagination totalPages={totalPages} />
 
         {/* Grid de Resultados */}
         {data.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {data.map((plugin) => (
               <PluginCard key={plugin.id} plugin={plugin} />
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="mb-4 text-6xl">🔍</div>
-            <h3 className="text-xl font-semibold text-slate-300">Nenhum plugin encontrado</h3>
-            <p className="text-slate-500">Tente buscar por outro termo.</p>
+          <div className="flex flex-col items-center justify-center py-32 text-center">
+            <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-white/5 text-4xl ring-1 ring-white/10">
+              🔍
+            </div>
+            <h3 className="mb-2 text-2xl font-semibold text-slate-200">Nenhum plugin encontrado</h3>
+            <p className="max-w-xs text-slate-500">
+              Não encontramos nada para "{query}". Tente termos mais genéricos ou verifique a ortografia.
+            </p>
           </div>
         )}
       </div>
 
-      {/* Footer Simples */}
-      <footer className="mt-20 border-t border-slate-800 bg-slate-900 py-8 text-center text-sm text-slate-500">
-        <p>© {new Date().getFullYear()} Awesome Obsidian. Feito com Next.js & Drizzle.</p>
+      {/* Footer Premium */}
+      <footer className="border-t border-white/5 bg-white/[0.01] py-12">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-sm text-slate-500">
+            &copy; {new Date().getFullYear()} Awesome Obsidian. Feito para a comunidade de PKM.
+          </p>
+        </div>
       </footer>
     </main>
   );

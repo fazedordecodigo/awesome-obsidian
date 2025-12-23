@@ -2,7 +2,7 @@
 
 import { Search, ChevronLeft, ChevronRight, ArrowUpDown } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useDebouncedCallback } from 'use-debounce'; // Recomendo instalar: npm i use-debounce ou implementar manual
+import { useDebouncedCallback } from 'use-debounce';
 
 export function SearchAndPagination({ totalPages }: { totalPages: number }) {
   const searchParams = useSearchParams();
@@ -12,10 +12,9 @@ export function SearchAndPagination({ totalPages }: { totalPages: number }) {
   const currentPage = Number(searchParams.get('page')) || 1;
   const currentSort = searchParams.get('sort') || 'newest';
 
-  // Atualiza a URL com o termo de busca (Debounce de 300ms)
   const handleSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams);
-    params.set('page', '1'); // Reseta para pág 1 ao buscar
+    params.set('page', '1');
 
     if (term) {
       params.set('q', term);
@@ -25,15 +24,13 @@ export function SearchAndPagination({ totalPages }: { totalPages: number }) {
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 
-  // Atualiza a ordenação
   const handleSort = (sort: string) => {
     const params = new URLSearchParams(searchParams);
-    params.set('page', '1'); // Reseta para pág 1 ao ordenar
+    params.set('page', '1');
     params.set('sort', sort);
     replace(`${pathname}?${params.toString()}`);
   };
 
-  // Navegação de páginas
   const handlePageChange = (direction: 'next' | 'prev') => {
     const params = new URLSearchParams(searchParams);
     const newPage = direction === 'next' ? currentPage + 1 : currentPage - 1;
@@ -45,65 +42,62 @@ export function SearchAndPagination({ totalPages }: { totalPages: number }) {
   };
 
   return (
-    <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
       {/* Campo de Busca */}
-      <div className="relative w-full md:max-w-md">
-        <label htmlFor="search" className="sr-only">Buscar Plugin</label>
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+      <div className="relative w-full md:max-w-xl">
+        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
           <Search className="h-5 w-5 text-slate-500" />
         </div>
         <input
           id="search"
-          className="block w-full rounded-lg border border-slate-700 bg-slate-900 py-3 pl-10 pr-3 text-slate-100 placeholder-slate-500 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 sm:text-sm"
+          className="block w-full rounded-2xl border border-white/10 bg-white/5 py-4 pl-12 pr-4 text-slate-100 placeholder-slate-500 transition-all focus:border-purple-500/50 focus:bg-white/[0.07] focus:outline-none focus:ring-4 focus:ring-purple-500/10 sm:text-sm"
           placeholder="Buscar por nome, autor ou descrição..."
           onChange={(e) => handleSearch(e.target.value)}
           defaultValue={searchParams.get('q')?.toString()}
         />
       </div>
 
-      {/* Ordenação */}
-      <div className="relative flex items-center gap-2">
-        <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center">
-          <ArrowUpDown className="h-4 w-4 text-slate-500" />
+      <div className="flex flex-wrap items-center gap-4">
+        {/* Ordenação */}
+        <div className="relative">
+          <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center">
+            <ArrowUpDown className="h-4 w-4 text-slate-500" />
+          </div>
+          <select
+            id="sort"
+            className="block w-full appearance-none rounded-2xl border border-white/10 bg-white/5 py-4 pl-12 pr-10 text-sm font-medium text-slate-200 transition-all focus:border-purple-500/50 focus:bg-white/[0.07] focus:outline-none focus:ring-4 focus:ring-purple-500/10 md:w-56"
+            value={currentSort}
+            onChange={(e) => handleSort(e.target.value)}
+          >
+            <option value="newest">Mais Recentes</option>
+            <option value="downloads">Mais Downloads</option>
+            <option value="stars">Mais Estrelas</option>
+            <option value="name_asc">Nome (A-Z)</option>
+            <option value="name_desc">Nome (Z-A)</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
+            <ChevronRight className="h-4 w-4 rotate-90 text-slate-500" />
+          </div>
         </div>
-        <select
-          id="sort"
-          className="block w-full appearance-none rounded-lg border border-slate-700 bg-slate-900 py-3 pl-10 pr-8 text-sm text-slate-200 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 md:w-48"
-          value={currentSort}
-          onChange={(e) => handleSort(e.target.value)}
-        >
-          <option value="newest">Mais Recentes</option>
-          <option value="downloads">Mais Downloads</option>
-          <option value="stars">Mais Estrelas</option>
-          <option value="name_asc">Nome (A-Z)</option>
-          <option value="name_desc">Nome (Z-A)</option>
-        </select>
-        <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-          <svg className="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-      </div>
 
-      {/* Controles de Paginação */}
-      <div className="flex items-center justify-between gap-4 rounded-lg bg-slate-900 p-2 md:justify-end">
-        <span className="text-sm text-slate-400">
-          Página <span className="font-bold text-white">{currentPage}</span> de <span className="font-bold text-white">{totalPages}</span>
-        </span>
-        <div className="flex gap-2">
+        {/* Controles de Paginação */}
+        <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-1.5">
           <button
             onClick={() => handlePageChange('prev')}
             disabled={currentPage <= 1}
-            className="rounded-md border border-slate-700 p-2 text-slate-300 hover:bg-slate-800 disabled:opacity-50 disabled:hover:bg-transparent"
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-400 transition-all hover:bg-white/10 hover:text-white disabled:opacity-20 disabled:hover:bg-transparent"
           >
-            <ChevronLeft size={16} />
+            <ChevronLeft size={20} />
           </button>
+          <div className="px-3 text-sm font-semibold text-slate-300">
+            {currentPage} <span className="mx-1 text-slate-600">/</span> {totalPages}
+          </div>
           <button
             onClick={() => handlePageChange('next')}
             disabled={currentPage >= totalPages}
-            className="rounded-md border border-slate-700 p-2 text-slate-300 hover:bg-slate-800 disabled:opacity-50 disabled:hover:bg-transparent"
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-400 transition-all hover:bg-white/10 hover:text-white disabled:opacity-20 disabled:hover:bg-transparent"
           >
-            <ChevronRight size={16} />
+            <ChevronRight size={20} />
           </button>
         </div>
       </div>

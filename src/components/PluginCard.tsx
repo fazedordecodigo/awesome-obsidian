@@ -7,54 +7,54 @@ interface PluginCardProps {
     description: string;
     author: string;
     repo: string;
-    stars?: number; // Opcional se não tiver no banco ainda
-    downloads?: number; // Opcional
+    stars?: number;
+    downloads?: number;
   };
 }
 
 export function PluginCard({ plugin }: PluginCardProps) {
   return (
-    <div className="group relative flex flex-col justify-between rounded-xl border border-slate-800 bg-slate-900/50 p-6 shadow-lg backdrop-blur-sm transition-all hover:-translate-y-1 hover:border-purple-500/50 hover:shadow-purple-500/10">
+    <div className="group relative flex flex-col justify-between rounded-2xl border border-white/5 bg-white/[0.02] p-6 transition-all duration-300 hover:border-purple-500/30 hover:bg-white/[0.04] hover:shadow-[0_0_40px_-15px_rgba(124,58,237,0.1)]">
 
       {/* Header do Card */}
       <div>
-        <div className="mb-4 flex items-start justify-between">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-purple-400 group-hover:bg-purple-500/20 group-hover:text-purple-300">
-            <ExternalLink size={20} />
+        <div className="mb-6 flex items-start justify-between">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/10 text-purple-400 ring-1 ring-purple-500/20 transition-colors group-hover:bg-purple-500/20 group-hover:text-purple-300">
+            <ExternalLink size={22} />
           </div>
-          {/* Badge de Categoria ou Status (Exemplo) */}
-          <span className="rounded-full bg-slate-800 px-2 py-1 text-xs font-medium text-slate-400">
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
             Plugin
           </span>
         </div>
 
-        <h3 className="mb-2 text-xl font-bold text-slate-100 group-hover:text-purple-400">
+        <h3 className="mb-3 text-xl font-semibold tracking-tight text-slate-100 transition-colors group-hover:text-white">
           {plugin.name}
         </h3>
 
-        <p className="mb-6 line-clamp-3 text-sm leading-relaxed text-slate-400">
+        <p className="mb-8 line-clamp-3 text-sm leading-relaxed text-slate-400 transition-colors group-hover:text-slate-300">
           {plugin.description}
         </p>
       </div>
 
       {/* Footer do Card */}
-      <div className="mt-auto border-t border-slate-800 pt-4">
-        <div className="flex items-center justify-between text-xs text-slate-500">
-          <div className="flex items-center gap-1 hover:text-slate-300">
-            <User size={14} />
-            <span className="truncate max-w-[100px]">{plugin.author}</span>
+      <div className="mt-auto">
+        <div className="mb-6 flex items-center justify-between border-t border-white/5 pt-5 text-xs font-medium text-slate-500">
+          <div className="flex items-center gap-2 transition-colors hover:text-slate-300">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-800 text-slate-400">
+              <User size={12} />
+            </div>
+            <span className="truncate max-w-[120px]">{plugin.author}</span>
           </div>
 
-          <div className="flex gap-3">
-            <div className="flex items-center gap-1" title="Estrelas">
-              <Star size={14} className="text-yellow-500" />
-              <span>{plugin.stars || 0}</span>
+          <div className="flex gap-4">
+            <div className="flex items-center gap-1.5" title="Estrelas">
+              <Star size={14} className="text-yellow-500/80" />
+              <span className="text-slate-400">{plugin.stars?.toLocaleString() || 0}</span>
             </div>
-            {/* Se tiver downloads no futuro */}
             {plugin.downloads && (
-              <div className="flex items-center gap-1" title="Downloads">
-                <Download size={14} className="text-blue-500" />
-                <span>{plugin.downloads}</span>
+              <div className="flex items-center gap-1.5" title="Downloads">
+                <Download size={14} className="text-blue-400/80" />
+                <span className="text-slate-400">{plugin.downloads.toLocaleString()}</span>
               </div>
             )}
           </div>
@@ -64,9 +64,10 @@ export function PluginCard({ plugin }: PluginCardProps) {
           href={`https://github.com/${plugin.repo}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 block w-full rounded-lg bg-slate-800 py-2 text-center text-sm font-semibold text-white transition-colors hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-white text-black py-3 text-sm font-bold transition-all hover:bg-purple-500 hover:text-white active:scale-[0.98]"
         >
-          Ver Repositório
+          Ver no GitHub
+          <ExternalLink size={14} />
         </a>
       </div>
     </div>
