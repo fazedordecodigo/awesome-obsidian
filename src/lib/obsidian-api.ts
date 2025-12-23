@@ -24,7 +24,7 @@ export async function getObsidianPlugins(): Promise<ObsidianPlugin[]> {
     }
 
     const plugins: ObsidianPlugin[] = await pluginsRes.json();
-    const stats: Record<string, any> = await statsRes.json();
+    const stats: Record<string, { downloads?: number; updated?: number; stars?: number }> = await statsRes.json();
 
     return plugins.map((plugin) => ({
       ...plugin,
