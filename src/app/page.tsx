@@ -62,15 +62,15 @@ export default async function Home(props: PageProps) {
       <section className="relative overflow-hidden py-24 md:py-32">
         <div className="container relative mx-auto px-4 text-center">
           <div className="mb-8 flex justify-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-300 backdrop-blur-xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent backdrop-blur-xl">
               <Boxes className="h-4 w-4" />
               <span>Curadoria de Plugins Obsidian</span>
             </div>
           </div>
-          <h1 className="mb-6 bg-gradient-to-b from-white to-slate-500 bg-clip-text text-6xl font-bold tracking-tight text-transparent md:text-8xl">
+          <h1 className="mb-6 bg-gradient-to-b from-foreground to-foreground/50 bg-clip-text text-6xl font-bold tracking-tight text-transparent md:text-8xl">
             Awesome Obsidian
           </h1>
-          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-slate-400 md:text-xl">
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
             Eleve seu segundo cérebro com as melhores ferramentas. Uma coleção selecionada para potencializar seu fluxo de trabalho no Obsidian.
           </p>
         </div>
@@ -90,11 +90,11 @@ export default async function Home(props: PageProps) {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-32 text-center">
-            <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-white/5 text-4xl ring-1 ring-white/10">
+            <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-card text-4xl ring-1 ring-border">
               🔍
             </div>
-            <h3 className="mb-2 text-2xl font-semibold text-slate-200">Nenhum plugin encontrado</h3>
-            <p className="max-w-xs text-slate-500">
+            <h3 className="mb-2 text-2xl font-semibold text-foreground">Nenhum plugin encontrado</h3>
+            <p className="max-w-xs text-muted">
               Não encontramos nada para "{query}". Tente termos mais genéricos ou verifique a ortografia.
             </p>
           </div>
@@ -102,9 +102,9 @@ export default async function Home(props: PageProps) {
       </div>
 
       {/* Footer Premium */}
-      <footer className="border-t border-white/5 bg-white/[0.01] py-12">
+      <footer className="border-t border-border bg-card/30 py-12">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-muted">
             &copy; {new Date().getFullYear()} Awesome Obsidian. Feito para a comunidade de PKM.
           </p>
         </div>

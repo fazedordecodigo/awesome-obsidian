@@ -46,11 +46,11 @@ export function SearchAndPagination({ totalPages }: { totalPages: number }) {
       {/* Campo de Busca */}
       <div className="relative w-full md:max-w-xl">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-          <Search className="h-5 w-5 text-slate-500" />
+          <Search className="h-5 w-5 text-muted" />
         </div>
         <input
           id="search"
-          className="block w-full rounded-2xl border border-white/10 bg-white/5 py-4 pl-12 pr-4 text-slate-100 placeholder-slate-500 transition-all focus:border-purple-500/50 focus:bg-white/[0.07] focus:outline-none focus:ring-4 focus:ring-purple-500/10 sm:text-sm"
+          className="block w-full rounded-2xl border border-border bg-card/50 py-4 pl-12 pr-4 text-foreground placeholder-muted transition-all focus:border-accent/50 focus:bg-card focus:outline-none focus:ring-4 focus:ring-accent/10 sm:text-sm"
           placeholder="Buscar por nome, autor ou descrição..."
           onChange={(e) => handleSearch(e.target.value)}
           defaultValue={searchParams.get('q')?.toString()}
@@ -61,11 +61,11 @@ export function SearchAndPagination({ totalPages }: { totalPages: number }) {
         {/* Ordenação */}
         <div className="relative">
           <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center">
-            <ArrowUpDown className="h-4 w-4 text-slate-500" />
+            <ArrowUpDown className="h-4 w-4 text-muted" />
           </div>
           <select
             id="sort"
-            className="block w-full appearance-none rounded-2xl border border-white/10 bg-white/5 py-4 pl-12 pr-10 text-sm font-medium text-slate-200 transition-all focus:border-purple-500/50 focus:bg-white/[0.07] focus:outline-none focus:ring-4 focus:ring-purple-500/10 md:w-56"
+            className="block w-full appearance-none rounded-2xl border border-border bg-card/50 py-4 pl-12 pr-10 text-sm font-medium text-foreground transition-all focus:border-accent/50 focus:bg-card focus:outline-none focus:ring-4 focus:ring-accent/10 md:w-56"
             value={currentSort}
             onChange={(e) => handleSort(e.target.value)}
           >
@@ -76,26 +76,26 @@ export function SearchAndPagination({ totalPages }: { totalPages: number }) {
             <option value="name_desc">Nome (Z-A)</option>
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
-            <ChevronRight className="h-4 w-4 rotate-90 text-slate-500" />
+            <ChevronRight className="h-4 w-4 rotate-90 text-muted" />
           </div>
         </div>
 
         {/* Controles de Paginação */}
-        <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-1.5">
+        <div className="flex items-center gap-2 rounded-2xl border border-border bg-card/50 p-1.5">
           <button
             onClick={() => handlePageChange('prev')}
             disabled={currentPage <= 1}
-            className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-400 transition-all hover:bg-white/10 hover:text-white disabled:opacity-20 disabled:hover:bg-transparent"
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-muted transition-all hover:bg-accent/10 hover:text-accent disabled:opacity-20 disabled:hover:bg-transparent"
           >
             <ChevronLeft size={20} />
           </button>
-          <div className="px-3 text-sm font-semibold text-slate-300">
-            {currentPage} <span className="mx-1 text-slate-600">/</span> {totalPages}
+          <div className="px-3 text-sm font-semibold text-foreground/80">
+            {currentPage} <span className="mx-1 text-muted/50">/</span> {totalPages}
           </div>
           <button
             onClick={() => handlePageChange('next')}
             disabled={currentPage >= totalPages}
-            className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-400 transition-all hover:bg-white/10 hover:text-white disabled:opacity-20 disabled:hover:bg-transparent"
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-muted transition-all hover:bg-accent/10 hover:text-accent disabled:opacity-20 disabled:hover:bg-transparent"
           >
             <ChevronRight size={20} />
           </button>
