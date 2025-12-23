@@ -1,6 +1,5 @@
 import { db } from "@/db";
 import { ratings } from "@/db/schema";
-import { eq } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 
 export const getPluginRatings = unstable_cache(

@@ -1,62 +1,62 @@
-"use client";
+import React from 'react';
+import { Star, Download, User, ExternalLink } from 'lucide-react';
 
-import { useState } from "react";
-import { ratePlugin } from "@/app/actions/rate";
-import { ObsidianPlugin } from "@/lib/obsidian-api";
-
-interface Props {
-  plugin: ObsidianPlugin;
-  ratingInfo?: { averageRating: number; totalRatings: number };
+interface PluginCardProps {
+  plugin: {
+    name: string;
+    description: string;
+    author: string;
+    repo: string;
+    stars?: number; // Opcional se não tiver no banco ainda
+    downloads?: number; // Opcional
+  };
 }
 
-export default function PluginCard({ plugin, ratingInfo }: Props) {
-  const [userRating, setUserRating] = useState(0);
-  const [isRating, setIsRating] = useState(false);
-
-  const handleRate = async (rating: number) => {
-    setIsRating(true);
-    setUserRating(rating);
-    const result = await ratePlugin(plugin.id, rating);
-    if (result.error) {
-      alert(result.error);
-      setUserRating(0);
-    }
-    setIsRating(false);
-  };
-
+export function PluginCard({ plugin }: PluginCardProps) {
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
-      <div className="flex justify-between items-start mb-4">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{plugin.name}</h3>
-        <span className="text-xs font-medium px-2.5 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
-          {plugin.downloads?.toLocaleString()} downloads
-        </span>
+    <div className="group relative flex flex-col justify-between rounded-xl border border-slate-800 bg-slate-900/50 p-6 shadow-lg backdrop-blur-sm transition-all hover:-translate-y-1 hover:border-purple-500/50 hover:shadow-purple-500/10">
+
+      {/* Header do Card */}
+      <div>
+        <div className="mb-4 flex items-start justify-between">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-purple-400 group-hover:bg-purple-500/20 group-hover:text-purple-300">
+            <ExternalLink size={20} />
+          </div>
+          {/* Badge de Categoria ou Status (Exemplo) */}
+          <span className="rounded-full bg-slate-800 px-2 py-1 text-xs font-medium text-slate-400">
+            Plugin
+          </span>
+        </div>
+
+        <h3 className="mb-2 text-xl font-bold text-slate-100 group-hover:text-purple-400">
+          {plugin.name}
+        </h3>
+
+        <p className="mb-6 line-clamp-3 text-sm leading-relaxed text-slate-400">
+          {plugin.description}
+        </p>
       </div>
 
-      <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
-        {plugin.description}
-      </p>
+      {/* Footer do Card */}
+      <div className="mt-auto border-t border-slate-800 pt-4">
+        <div className="flex items-center justify-between text-xs text-slate-500">
+          <div className="flex items-center gap-1 hover:text-slate-300">
+            <User size={14} />
+            <span className="truncate max-w-[100px]">{plugin.author}</span>
+          </div>
 
-      <div className="flex items-center justify-between mt-auto">
-        <div className="flex flex-col">
-          <span className="text-xs text-gray-500 dark:text-gray-500">Author: {plugin.author}</span>
-          <div className="flex items-center mt-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                disabled={isRating}
-                onClick={() => handleRate(star)}
-                className={`w-5 h-5 ${(userRating || Math.round(ratingInfo?.averageRating || 0)) >= star
-                    ? "text-yellow-400"
-                    : "text-gray-300 dark:text-gray-600"
-                  } transition-colors`}
-              >
-                ★
-              </button>
-            ))}
-            <span className="ml-2 text-xs text-gray-500">
-              ({ratingInfo?.totalRatings || 0})
-            </span>
+          <div className="flex gap-3">
+            <div className="flex items-center gap-1" title="Estrelas">
+              <Star size={14} className="text-yellow-500" />
+              <span>{plugin.stars || 0}</span>
+            </div>
+            {/* Se tiver downloads no futuro */}
+            {plugin.downloads && (
+              <div className="flex items-center gap-1" title="Downloads">
+                <Download size={14} className="text-blue-500" />
+                <span>{plugin.downloads}</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -64,9 +64,9 @@ export default function PluginCard({ plugin, ratingInfo }: Props) {
           href={`https://github.com/${plugin.repo}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm font-medium text-blue-600 hover:underline"
+          className="mt-4 block w-full rounded-lg bg-slate-800 py-2 text-center text-sm font-semibold text-white transition-colors hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900"
         >
-          GitHub →
+          Ver Repositório
         </a>
       </div>
     </div>
