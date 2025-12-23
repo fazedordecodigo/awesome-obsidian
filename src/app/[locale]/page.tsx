@@ -2,6 +2,7 @@ import { getObsidianPlugins } from '@/lib/obsidian-api';
 import { PluginList } from '@/components/PluginList';
 import { Boxes } from 'lucide-react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import Image from 'next/image';
 
 export default async function Home({
   params
@@ -23,7 +24,15 @@ export default async function Home({
       {/* Hero Section */}
       <section className="relative overflow-hidden py-24 md:py-32">
         <div className="container relative mx-auto px-4 text-center">
-          <div className="mb-8 flex justify-center">
+          <div className="mb-8 flex flex-col items-center gap-6">
+            <Image
+              src="/obsidian-logo.svg"
+              alt="Obsidian Logo"
+              width={120}
+              height={120}
+              className="animate-in fade-in zoom-in duration-1000 drop-shadow-[0_0_30px_rgba(108,49,227,0.3)]"
+              priority
+            />
             <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent backdrop-blur-xl">
               <Boxes className="h-4 w-4" />
               <span>{t('badge')}</span>
