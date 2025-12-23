@@ -1,8 +1,8 @@
 ---
 description: 'Intelligent README.md generation prompt that analyzes project documentation structure and creates comprehensive repository documentation. Scans .github/copilot directory files and copilot-instructions.md to extract project information, technology stack, architecture, development workflow, coding standards, and testing approaches while generating well-structured markdown documentation with proper formatting, cross-references, and developer-focused content.'
 
-mode: expert-dotnet-software-engineer
-tools: ['search', 'edit', 'fetch', 'changes', 'cognitionai/deepwiki/*', 'microsoftdocs/mcp/*', 'ms-vscode.vscode-websearchforcopilot/websearch', 'problems', 'think', 'todos', 'upstash/context7/*']
+agent: agent
+tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'oraios/serena/*', 'agent', 'memory', 'todo']
 ---
 
 # README Generator Prompt
